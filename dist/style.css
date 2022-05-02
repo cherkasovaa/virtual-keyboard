@@ -61,22 +61,6 @@ body {
 	color: var(--key-text-color-active);
 }
 
-.remove {
-	animation: remove var(--transition) forwards;
-}
-
-@keyframes remove {
-	0% {
-		background-color: var(--key-bg-color-active);
-		color: var(--key-text-color-active);
-	}
-
-	100%{
-		background-color: var(--key-bg-color);
-		color: var(--key-text-color);
-	}
-}
-
 .backspace-key {
 	width: 120px;
 }
