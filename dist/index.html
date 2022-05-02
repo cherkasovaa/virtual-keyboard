@@ -6,8 +6,94 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Virtual Keyboard</title>
 	<link rel="stylesheet" href="./style.css">
-	<script src="./index.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300,400&display=swap" rel="stylesheet">
+	
 </head>
 <body>
+	<div class="container">
+		<textarea class="text" name="textarea"></textarea>
+		<div class="keyboard-wrapper">
+			<div class="keyboard-lights"></div>
+			<div class="keyboard-keys">
+				<div class="row">
+					<div class="keys"><span class="subkeys">~</span> `</div>
+					<div class="keys"><span class="subkeys">!</span>1</div>
+					<div class="keys"><span class="subkeys">@</span>2</div>
+					<div class="keys"><span class="subkeys">#</span>3</div>
+					<div class="keys"><span class="subkeys">$</span>4</div>
+					<div class="keys"><span class="subkeys">%</span>5</div>
+					<div class="keys"><span class="subkeys">^</span>6</div>
+					<div class="keys"><span class="subkeys">&</span>7</div>
+					<div class="keys"><span class="subkeys">*</span>8</div>
+					<div class="keys"><span class="subkeys">(</span>9</div>
+					<div class="keys"><span class="subkeys">)</span>0</div>
+					<div class="keys"><span class="subkeys">_</span>-</div>
+					<div class="keys"><span class="subkeys">+</span>=</div>
+					<div class="keys backspace-key">Backspace</div>
+				</div>
+				<div class="row">
+					<div class="keys tab-key">Tab</div>
+					<div class="keys">q</div>
+					<div class="keys">w</div>
+					<div class="keys">e</div>
+					<div class="keys">r</div>
+					<div class="keys">t</div>
+					<div class="keys">y</div>
+					<div class="keys">u</div>
+					<div class="keys">i</div>
+					<div class="keys">o</div>
+					<div class="keys">p</div>
+					<div class="keys"><span class="subkeys">{</span>[</div>
+					<div class="keys"><span class="subkeys">}</span>]</div>
+					<div class="keys slash-key"><span class="subkeys">|</span>\</div>
+				</div>
+				<div class="row">
+					<div class="keys capslock-key">Caps Lock</div>
+					<div class="keys">a</div>
+					<div class="keys">s</div>
+					<div class="keys">d</div>
+					<div class="keys">f</div>
+					<div class="keys">g</div>
+					<div class="keys">h</div>
+					<div class="keys">j</div>
+					<div class="keys">k</div>
+					<div class="keys">l</div>
+					<div class="keys"><span class="subkeys">:</span>;</div>
+					<div class="keys"><span class="subkeys">&quot;</span>'</div>
+					<div class="keys enter-key">Enter</div>
+				</div>
+				<div class="row">
+					<div class="keys shift-key shift-left">Shift</div>
+					<div class="keys">z</div>
+					<div class="keys">x</div>
+					<div class="keys">c</div>
+					<div class="keys">v</div>
+					<div class="keys">b</div>
+					<div class="keys">n</div>
+					<div class="keys">m</div>
+					<div class="keys"><span class="subkeys">&lt;</span>,</div>
+					<div class="keys"><span class="subkeys">&gt;</span>.</div>
+					<div class="keys"><span class="subkeys">?</span>/</div>
+					<div class="keys shift-key shift-right">Shift</div>
+				</div>
+				<div class="row">
+					<div class="keys ctrl-key ctrl-left">Ctrl</div>
+					<div class="keys win-key">Win</div>
+					<div class="keys alt-key alt-left">Alt</div>
+					<div class="keys space-key"></div>
+					<div class="keys alt-key alt-right">Alt Gr</div>
+					<div class="keys ctrl-key ctrl-right">Ctrl</div>
+					<div class="col">
+						<div class="keys">&#8678;</div>
+						<div class="keys up-key">&#8682;</div>
+						<div class="keys down-key">&#8681;</div>
+						<div class="keys">&#8680;</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="./index.js"></script>
 </body>
 </html>
