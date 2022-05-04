@@ -16,14 +16,15 @@ const WIN_KEY = document.querySelector('.win-key');
 // const TEXT_INPUT = document.querySelector('.text');
 
 keys.forEach((key) => {
-  key.setAttribute('key-name', key.innerHTML);
+  key.setAttribute('data-name', key.innerHTML);
+  // key.setAttribute('data-name', key.innerHTML);
 });
 
 window.addEventListener('keydown', (e) => {
   keys.forEach((key) => {
     e.preventDefault();
 
-    if (key.getAttribute('key-name') === e.key) {
+    if (key.getAttribute('data-name') === e.key) {
       key.classList.add('active');
     }
 
@@ -126,5 +127,17 @@ window.addEventListener('keyup', (e) => {
       default:
         break;
     }
+  });
+});
+
+keys.forEach((key) => {
+  key.addEventListener('mouseover', () => {
+    key.classList.add('active');
+  });
+});
+
+keys.forEach((key) => {
+  key.addEventListener('mouseout', () => {
+    key.classList.remove('active');
   });
 });
