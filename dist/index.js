@@ -12,6 +12,7 @@ const UP_KEY = document.querySelector('.up-key');
 const DOWN_KEY = document.querySelector('.down-key');
 const RIGHT_KEY = document.querySelector('.right-key');
 const WIN_KEY = document.querySelector('.win-key');
+const TEXT_AREA = document.querySelector('.text');
 
 keys.forEach((key) => {
   key.setAttribute('data-name', key.innerHTML);
@@ -87,6 +88,42 @@ const hightlightArrowKey = (e) => {
   }
 };
 
+const deleteText = () => {
+  TEXT_AREA.value = TEXT_AREA.value.slice(0, -1);
+  return TEXT_AREA.value;
+};
+
+const addTab = () => {
+  return ' '.repeat(4);
+};
+
+const displayText = (e) => {
+  let text = e.key;
+
+  if (text === 'Backspace') {
+    return deleteText();
+  }
+
+  if (text === 'Enter') {
+    text = '\n';
+  }
+
+  if (text === 'Shift' || text === 'Alt' || text === 'Control' || text === 'CapsLock' || text === 'Meta') {
+    return;
+  }
+
+  if (text === 'Tab') {
+    text = addTab();
+  }
+
+  if (e.code === 'Space') {
+    text = ' ';
+  }
+
+  TEXT_AREA.value += text;
+  return TEXT_AREA;
+};
+
 window.addEventListener('keydown', (e) => {
   keys.forEach((key) => {
     e.preventDefault();
@@ -102,6 +139,14 @@ window.addEventListener('keydown', (e) => {
     hightlightAltKey(e);
     hightlightArrowKey(e);
     hightlightWindowKey(e);
+
+    if (key.innerHTML === e.key) {
+      displayText(e);
+    }
+
+    if (key.innerHTML === '' && e.code === 'Space') {
+      displayText(e);
+    }
   });
 });
 
