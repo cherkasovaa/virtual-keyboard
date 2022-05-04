@@ -12,13 +12,80 @@ const UP_KEY = document.querySelector('.up-key');
 const DOWN_KEY = document.querySelector('.down-key');
 const RIGHT_KEY = document.querySelector('.right-key');
 const WIN_KEY = document.querySelector('.win-key');
-// const keyboard = document.querySelector('.keyboard-wrapper');
-// const TEXT_INPUT = document.querySelector('.text');
 
 keys.forEach((key) => {
   key.setAttribute('data-name', key.innerHTML);
-  // key.setAttribute('data-name', key.innerHTML);
 });
+
+const hightlightSpaceKey = (e) => {
+  if (e.code === 'Space') {
+    SPACE.classList.add('active');
+  }
+};
+
+const hightlightWindowKey = (e) => {
+  if (e.code === 'MetaLeft') {
+    WIN_KEY.classList.add('active');
+  }
+};
+
+const hightlightCapslockKey = (e) => {
+  if (e.code === 'CapsLock') {
+    CAPSLOCK.classList.add('active');
+  }
+};
+
+const hightlightShiftsKey = (e) => {
+  if (e.code === 'ShiftLeft') {
+    SHIFT_RIGHT.classList.remove('active');
+  }
+
+  if (e.code === 'ShiftRight') {
+    SHIFT_LEFT.classList.remove('active');
+  }
+};
+
+const hightlightCtrlKey = (e) => {
+  if (e.code === 'ControlLeft') {
+    CTRL_RIGHT.classList.remove('active');
+    CTRL_LEFT.classList.add('active');
+  }
+
+  if (e.code === 'ControlRight') {
+    CTRL_LEFT.classList.remove('active');
+    CTRL_RIGHT.classList.add('active');
+  }
+};
+
+const hightlightAltKey = (e) => {
+  if (e.code === 'AltLeft') {
+    ALT_RIGHT.classList.remove('active');
+    ALT_LEFT.classList.add('active');
+  }
+
+  if (e.code === 'AltRight') {
+    ALT_LEFT.classList.remove('active');
+    ALT_RIGHT.classList.add('active');
+  }
+};
+
+const hightlightArrowKey = (e) => {
+  if (e.code === 'ArrowLeft') {
+    LEFT_KEY.classList.add('active');
+  }
+
+  if (e.code === 'ArrowUp') {
+    UP_KEY.classList.add('active');
+  }
+
+  if (e.code === 'ArrowDown') {
+    DOWN_KEY.classList.add('active');
+  }
+
+  if (e.code === 'ArrowRight') {
+    RIGHT_KEY.classList.add('active');
+  }
+};
 
 window.addEventListener('keydown', (e) => {
   keys.forEach((key) => {
@@ -28,105 +95,19 @@ window.addEventListener('keydown', (e) => {
       key.classList.add('active');
     }
 
-    switch (e.code) {
-      case 'Space':
-        SPACE.classList.add('active');
-        break;
-      case 'ShiftLeft':
-        SHIFT_RIGHT.classList.remove('active');
-        break;
-      case 'ShiftRight':
-        SHIFT_LEFT.classList.remove('active');
-        break;
-      case 'CapsLock':
-        CAPSLOCK.classList.add('active');
-        break;
-      case 'ControlLeft':
-        CTRL_RIGHT.classList.remove('active');
-        CTRL_LEFT.classList.add('active');
-        break;
-      case 'ControlRight':
-        CTRL_LEFT.classList.remove('active');
-        CTRL_RIGHT.classList.add('active');
-        break;
-      case 'AltLeft':
-        ALT_RIGHT.classList.remove('active');
-        ALT_LEFT.classList.add('active');
-        break;
-      case 'AltRight':
-        ALT_LEFT.classList.remove('active');
-        ALT_RIGHT.classList.add('active');
-        break;
-      case 'ArrowLeft':
-        LEFT_KEY.classList.add('active');
-        break;
-      case 'ArrowUp':
-        UP_KEY.classList.add('active');
-        break;
-      case 'ArrowDown':
-        DOWN_KEY.classList.add('active');
-        break;
-      case 'ArrowRight':
-        RIGHT_KEY.classList.add('active');
-        break;
-      case 'MetaLeft':
-        WIN_KEY.classList.add('active');
-        break;
-      default:
-        break;
-    }
+    hightlightSpaceKey(e);
+    hightlightCapslockKey(e);
+    hightlightShiftsKey(e);
+    hightlightCtrlKey(e);
+    hightlightAltKey(e);
+    hightlightArrowKey(e);
+    hightlightWindowKey(e);
   });
 });
 
-window.addEventListener('keyup', (e) => {
+window.addEventListener('keyup', () => {
   keys.forEach((key) => {
-    if (key.getAttribute('key-name') === e.key) {
-      key.classList.remove('active');
-    }
-
-    switch (e.code) {
-      case 'Space':
-        SPACE.classList.remove('active');
-        break;
-      case 'ShiftLeft':
-        SHIFT_LEFT.classList.remove('active');
-        break;
-      case 'ShiftRight':
-        SHIFT_RIGHT.classList.remove('active');
-        break;
-      case 'CapsLock':
-        CAPSLOCK.classList.remove('active');
-        break;
-      case 'ControlLeft':
-        CTRL_LEFT.classList.remove('active');
-        break;
-      case 'ControlRight':
-        CTRL_RIGHT.classList.remove('active');
-        break;
-      case 'AltLeft':
-        ALT_LEFT.classList.remove('active');
-        break;
-      case 'AltRight':
-        ALT_RIGHT.classList.remove('active');
-        break;
-      case 'ArrowLeft':
-        LEFT_KEY.classList.remove('active');
-        break;
-      case 'ArrowUp':
-        UP_KEY.classList.remove('active');
-        break;
-      case 'ArrowDown':
-        DOWN_KEY.classList.remove('active');
-        break;
-      case 'ArrowRight':
-        RIGHT_KEY.classList.remove('active');
-        break;
-      case 'MetaLeft':
-        WIN_KEY.classList.remove('active');
-        break;
-      default:
-        break;
-    }
+    key.classList.remove('active');
   });
 });
 
