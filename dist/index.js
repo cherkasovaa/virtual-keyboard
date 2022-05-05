@@ -119,7 +119,7 @@ const toUpperCase = (value) => {
   ) {
     return value;
   }
-  if (isNaN(value) && value.match(/[a-z]/g)) {
+  if (isNaN(value) && value.match(/[а-яa-z]/g)) {
     return value.toUpperCase();
   }
 
@@ -203,13 +203,24 @@ const checkMainKeys = (key) => {
 
     if (count === 1) {
       key.classList.add('shift-key', 'shift-right');
-      count = 0;
+      count++;
       return;
     }
   }
 
   if (key.innerText === 'Ctrl') {
     key.classList.add('ctrl-key');
+    if (count === 2) {
+      key.classList.add('ctrl-key', 'ctrl-left');
+      count++;
+      return;
+    }
+
+    if (count === 3) {
+      key.classList.add('ctrl-key', 'ctrl-right');
+      count = 0;
+      return;
+    }
   }
 
   if (key.innerText === 'Alt') {
