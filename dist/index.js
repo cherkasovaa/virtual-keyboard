@@ -18,6 +18,7 @@ const switcherTheme = document.querySelector('.switch');
 
 let count = 0;
 let capsFlag = false;
+let flagShift = false;
 let lang = 'en';
 
 const symbols = {
@@ -278,12 +279,12 @@ const hightlightShiftsKey = (e) => {
 
 const hightlightCtrlKey = (e) => {
   if (e.code === 'ControlLeft') {
-    CTRL_RIGHT.classList.remove('active');
+    // CTRL_RIGHT.classList.remove('active');
     CTRL_LEFT.classList.add('active');
   }
 
   if (e.code === 'ControlRight') {
-    CTRL_LEFT.classList.remove('active');
+    // CTRL_LEFT.classList.remove('active');
     CTRL_RIGHT.classList.add('active');
   }
 };
@@ -408,7 +409,8 @@ window.addEventListener('keydown', (e) => {
 });
 
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'Shift') {
+  if (e.key === 'Shift' && !flagShift) {
+    flagShift = !flagShift;
     lang = lang.toUpperCase();
     createRow(lang);
     hightlightShiftsKey(e);
@@ -432,6 +434,7 @@ window.addEventListener('keyup', (e) => {
     key.classList.remove('active');
 
     if (e.key === 'Shift') {
+      flagShift = !flagShift;
       lang = lang.toLowerCase();
       createRow(lang);
     }
