@@ -250,6 +250,10 @@ const checkMainKeys = (key) => {
   if (key.innerHTML === '⇨') {
     key.classList.add('right-key');
   }
+
+  if (key.innerHTML === 'Win') {
+    key.classList.add('win-key');
+  }
 };
 
 createRow(lang);
@@ -461,6 +465,7 @@ window.addEventListener('keyup', (e) => {
 
 window.onkeydown = (e) => {
   if (e.altKey && e.shiftKey) {
+    e.preventDefault();
     changeLang();
     createRow(lang);
     return;
