@@ -16,6 +16,7 @@ const TEXT_AREA = document.querySelector('.text');
 // const wrapper = document.querySelector('.keyboard-wrapper');
 
 let count = 0;
+let capsFlag = false;
 
 const symbols = {
   en: [
@@ -66,7 +67,12 @@ const createRow = (lang) => {
       } else {
         const key = document.createElement('div');
         key.className = 'keys';
-        key.innerText = symbols[lang][i][arr];
+        if(capsFlag){
+          key.innerText = toUpperCase(symbols[lang][i][arr]);
+        } else {
+          key.innerText = symbols[lang][i][arr];
+        }
+        
         checkMainKeys(key);
         key.setAttribute('data-name', key.innerHTML);
         row.append(key);
@@ -79,6 +85,17 @@ const createRow = (lang) => {
   parent.append(fragment);
 
   assignButtonValues();
+};
+
+const toUpperCase = (value) => {
+  if(value === 'Tab' || value === 'Backspace' || value === 'Enter' || value === 'Caps Lock' || value === 'Shift' || value === 'Ctrl' || value === 'Win' || value === 'Alt' || value === 'Alt Gr' || value === 'Space') {
+    return value;
+  }
+  if (isNaN(value) && value.match(/[a-z]/g)) {
+    return value.toUpperCase();
+  }
+
+  return value;
 };
 
 const assignButtonValues = () => {
@@ -96,7 +113,6 @@ const assignButtonValues = () => {
   DOWN_KEY = document.querySelector('.down-key');
   RIGHT_KEY = document.querySelector('.right-key');
   WIN_KEY = document.querySelector('.win-key');
-
 
   SHIFT_LEFT.addEventListener('mousedown', () => {
     createRow('EN');
@@ -364,19 +380,41 @@ window.addEventListener('keydown', (e) => {
   });
 });
 
+
+
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Shift') {
     createRow('EN');
     hightlightShiftsKey(e);
   }
+
+  if (e.key === 'CapsLock' && !capsFlag) {
+    capsFlag = !capsFlag;
+    createRow('en');
+    CAPSLOCK.classList.add('active');
+    return;
+  }
+
+  if (e.key === 'CapsLock' && capsFlag) {
+    capsFlag = !capsFlag;
+    createRow('en');
+    // CAPSLOCK.classList.remove('active');
+  }
+
 });
 
 window.addEventListener('keyup', (e) => {
   keys.forEach((key) => {
+    
     key.classList.remove('active');
 
     if (e.key === 'Shift') {
       createRow('en');
+    }
+
+    if (e.key === 'CapsLock' && capsFlag) {
+      CAPSLOCK.classList.add('active');
+      return;
     }
   });
 });
