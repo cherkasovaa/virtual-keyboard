@@ -446,6 +446,10 @@ window.addEventListener('keydown', (e) => {
 
 window.addEventListener('keyup', (e) => {
   keys.forEach((key) => {
+    if (capsFlag) {
+      CAPSLOCK.classList.add('active');
+    } 
+    
     key.classList.remove('active');
 
     if (e.key === 'Shift') {
@@ -454,9 +458,8 @@ window.addEventListener('keyup', (e) => {
       createRow(lang);
     }
 
-    if (e.key === 'CapsLock' && capsFlag) {
+    if (capsFlag) {
       CAPSLOCK.classList.add('active');
-      return;
     }
   });
 });
