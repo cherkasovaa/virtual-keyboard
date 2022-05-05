@@ -416,7 +416,6 @@ window.addEventListener('keydown', (e) => {
 
   if (e.key === 'CapsLock' && !capsFlag) {
     capsFlag = !capsFlag;
-    lang = lang.toUpperCase();
     createRow(lang);
     CAPSLOCK.classList.add('active');
     return;
@@ -424,7 +423,6 @@ window.addEventListener('keydown', (e) => {
 
   if (e.key === 'CapsLock' && capsFlag) {
     capsFlag = !capsFlag;
-    lang = lang.toLowerCase();
     createRow(lang);
   }
 });
