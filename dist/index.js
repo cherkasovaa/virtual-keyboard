@@ -457,15 +457,13 @@ window.addEventListener('keyup', (e) => {
   });
 });
 
+// let ctrlFlag = false;
+
 window.onkeydown = (e) => {
-  if (e.code === 'ControlLeft' || e.code === 'AltLeft') {
-    window.onkeyup = (e) => {
-      if (e.code === 'AltLeft' || e.code === 'ControlLeft') {
-        changeLang();
-        createRow(lang);
-        return;
-      }
-    };
+  if (e.altKey && e.shiftKey) {
+    changeLang();
+    createRow(lang);
+    return;
   }
 };
 
