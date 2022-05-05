@@ -96,6 +96,35 @@ const assignButtonValues = () => {
   DOWN_KEY = document.querySelector('.down-key');
   RIGHT_KEY = document.querySelector('.right-key');
   WIN_KEY = document.querySelector('.win-key');
+
+
+  SHIFT_LEFT.addEventListener('mousedown', () => {
+    createRow('EN');
+    SHIFT_LEFT.classList.add('active');
+  });
+
+  SHIFT_LEFT.addEventListener('mouseup', () => {
+    createRow('en');
+    SHIFT_LEFT.classList.remove('active');
+  });
+
+  keys.forEach((key) => {
+    key.addEventListener('mouseover', () => {
+      key.classList.add('active');
+    });
+  });
+
+  keys.forEach((key) => {
+    key.addEventListener('mouseout', () => {
+      key.classList.remove('active');
+    });
+  });
+
+  keys.forEach((key) => {
+    key.addEventListener('click', (e) => {
+      displayText(e);
+    });
+  });
 }
 
 const checkMainKeys = (key) => {
@@ -194,10 +223,12 @@ const hightlightCapslockKey = (e) => {
 
 const hightlightShiftsKey = (e) => {
   if (e.code === 'ShiftLeft') {
+    SHIFT_LEFT.classList.add('active');
     SHIFT_RIGHT.classList.remove('active');
   }
 
   if (e.code === 'ShiftRight') {
+    SHIFT_RIGHT.classList.add('active');
     SHIFT_LEFT.classList.remove('active');
   }
 };
@@ -336,6 +367,7 @@ window.addEventListener('keydown', (e) => {
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Shift') {
     createRow('EN');
+    hightlightShiftsKey(e);
   }
 });
 
@@ -347,20 +379,4 @@ window.addEventListener('keyup', (e) => {
       createRow('en');
     }
   });
-});
-
-keys.forEach((key) => {
-  key.addEventListener('mouseover', () => {
-    key.classList.add('active');
-  });
-});
-
-keys.forEach((key) => {
-  key.addEventListener('mouseout', () => {
-    key.classList.remove('active');
-  });
-});
-
-keys.forEach((key) => {
-  key.addEventListener('click', (e) => displayText(e));
 });
