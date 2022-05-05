@@ -1,12 +1,29 @@
-:root{
+:root, [data-theme="light"]{
+	--body-bg: #fff;
 	--max-width: 1008px;
 	--border-radius: 4px;
 	--transition: .3s;
 	--keyboard-bg-color: #e7e7e7;
+	--textarea-border: #bebebe;
 	--key-bg-color: #fff;
 	--key-bg-color-active: #979797;
 	--key-text-color: #000;
 	--key-text-color-active: #fff;
+	--text-color: #000;
+}
+
+[data-theme="dark"] {
+	--body-bg: #202020;
+	--max-width: 1008px;
+	--border-radius: 4px;
+	--transition: .3s;
+	--keyboard-bg-color: #6b6b6b;
+	--textarea-border: #a5a5a5;
+	--key-bg-color: #3b3b3b;
+	--key-bg-color-active: #979797;
+	--key-text-color: #000;
+	--key-text-color-active: #fff;
+	--text-color: #ffffff;
 }
 
 * {
@@ -18,6 +35,8 @@
 body {
 	font-family: 'Lato', sans-serif;
 	transition: var(--transition);
+	background-color: var(--body-bg);
+	color: var(--text-color);
 }
 
 .container {
@@ -116,12 +135,13 @@ body {
 .text {
 	font-weight: 400;
 	font-size: 16px;
+	color: var(--text-color);
 	max-width: var(--max-width);
 	width: 100%;
 	height: 150px;
-	border: 2px solid #bebebe;
+	border: 2px solid var(--textarea-border);
 	border-radius: var(--border-radius);
-	background-color: #e7e7e7;
+	background-color: var(--keyboard-bg-color);
 	margin-bottom: 40px;
 	padding: 12px;
 	resize: none;
