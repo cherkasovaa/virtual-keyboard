@@ -147,3 +147,7 @@ body {
 	resize: none;
 	outline: none;
 }
+
+.info {
+	margin-top: 20px;
+}
