@@ -13,6 +13,7 @@ let DOWN_KEY = document.querySelector('.down-key');
 let RIGHT_KEY = document.querySelector('.right-key');
 let WIN_KEY = document.querySelector('.win-key');
 const TEXT_AREA = document.querySelector('.text');
+const switcherTheme = document.querySelector('.switch');
 // const wrapper = document.querySelector('.keyboard-wrapper');
 
 let count = 0;
@@ -473,3 +474,10 @@ const checkCase = () => {
     return 'LowerCase';
   }
 };
+
+switcherTheme.addEventListener('click', () => {
+  switcherTheme.classList.toggle('on');
+  let theme = document.body.dataset.theme;
+
+  document.body.dataset.theme = theme === 'dark' ? 'light' : 'dark';
+});

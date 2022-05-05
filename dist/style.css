@@ -151,3 +151,42 @@ body {
 .info {
 	margin-top: 20px;
 }
+
+.switch {
+	position: relative;
+	top: 20px;
+	right: -50px;
+	display: inline-block;
+	width: 30px;
+	height: 12px;
+	border-radius: 12px;
+	background: var(--textarea-border);
+	margin: 0;
+	padding: 0;
+	border: none;
+	cursor: pointer;
+	transition-duration: .3s;
+}
+
+.switch::after {
+	content: "";
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 12px;
+	width: 12px;
+	border-radius: 12px;
+	background: var(--key-text-color-active);
+	transition-duration: .3s;
+	box-shadow: 0 0 10px 0 var(--textarea-border);
+}
+
+.on {
+	background: var(--key-text-color-active);
+	box-shadow: inset 0 0 10px 0 var(--textarea-border);
+}
+
+.on::after {
+	left: 18px;
+	background: var(--keyboard-bg-color);
+}
