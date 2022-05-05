@@ -377,7 +377,7 @@ const displayText = (e) => {
     return addTab();
   }
 
-  if (e.code === 'Space' || text === '') {
+  if (e.code === 'Space' || text === 'Space') {
     return addSpace();
   }
 
@@ -405,7 +405,7 @@ window.addEventListener('keydown', (e) => {
       displayText(e);
     }
 
-    if (key.innerHTML === '' && e.code === 'Space') {
+    if (key.innerHTML === 'Space' && e.code === 'Space') {
       displayText(e);
     }
 
