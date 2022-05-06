@@ -53,6 +53,11 @@ const symbols = {
   ],
 };
 
+const texts = [
+  'Клавиатура создана в операционной системе Windows',
+  'Для смены языка используется комбинация клавиш Shift left + Alt left',
+];
+
 const createSwitcher = () => {
   const switcher = document.createElement('div');
   switcher.className = 'switch';
@@ -67,6 +72,18 @@ const addSwitcher = () => {
 };
 
 addSwitcher();
+
+const createInfoText = (textArray) => {
+  for (const text in textArray) {
+    const paragraph = document.createElement('p');
+    paragraph.className = 'info';
+    paragraph.innerText = textArray[text];
+
+    document.querySelector('.container').appendChild(paragraph);
+  }
+};
+
+createInfoText(texts);
 
 const removeAllChildren = (parent) => {
   while (parent.firstChild) {
