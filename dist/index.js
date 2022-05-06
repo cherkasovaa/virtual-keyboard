@@ -1,3 +1,4 @@
+const BODY = document.body;
 let keys = document.querySelectorAll('.keys');
 let SPACE = document.querySelector('.space-key');
 let SHIFT_LEFT = document.querySelector('.shift-left');
@@ -13,7 +14,7 @@ let DOWN_KEY = document.querySelector('.down-key');
 let RIGHT_KEY = document.querySelector('.right-key');
 let WIN_KEY = document.querySelector('.win-key');
 const TEXT_AREA = document.querySelector('.text');
-const switcherTheme = document.querySelector('.switch');
+let switcherTheme;
 // const wrapper = document.querySelector('.keyboard-wrapper');
 
 let count = 0;
@@ -51,6 +52,21 @@ const symbols = {
     ['Ctrl', 'Win', 'Alt', 'Space', 'Alt Gr', 'Ctrl', ['&#8678;', '&#8682;', '&#8681;', '&#8680;']],
   ],
 };
+
+const createSwitcher = () => {
+  const switcher = document.createElement('div');
+  switcher.className = 'switch';
+  return switcher;
+};
+
+const addSwitcher = () => {
+  const switcher = createSwitcher();
+  BODY.append(switcher);
+
+  switcherTheme = document.querySelector('.switch');
+};
+
+addSwitcher();
 
 const removeAllChildren = (parent) => {
   while (parent.firstChild) {
@@ -495,7 +511,7 @@ const checkCase = () => {
 
 switcherTheme.addEventListener('click', () => {
   switcherTheme.classList.toggle('on');
-  let theme = document.body.dataset.theme;
+  const theme = document.body.dataset.theme;
 
   document.body.dataset.theme = theme === 'dark' ? 'light' : 'dark';
 });
