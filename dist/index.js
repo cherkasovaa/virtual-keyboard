@@ -13,7 +13,7 @@ let UP_KEY = document.querySelector('.up-key');
 let DOWN_KEY = document.querySelector('.down-key');
 let RIGHT_KEY = document.querySelector('.right-key');
 let WIN_KEY = document.querySelector('.win-key');
-const TEXT_AREA = document.querySelector('.text');
+let TEXT_AREA;
 let switcherTheme;
 // const wrapper = document.querySelector('.keyboard-wrapper');
 
@@ -71,7 +71,46 @@ const addSwitcher = () => {
   switcherTheme = document.querySelector('.switch');
 };
 
-addSwitcher();
+const addContainer = () => {
+  const container = document.createElement('div');
+  container.className = 'container';
+
+  BODY.append(container);
+};
+
+const createTextarea = () => {
+  const textarea = document.createElement('textarea');
+  textarea.className = 'text';
+  textarea.setAttribute('name', 'textarea');
+  textarea.setAttribute('autofocus', 'autofocus');
+
+  document.querySelector('.container').appendChild(textarea);
+  TEXT_AREA = document.querySelector('.text');
+};
+
+const createKeyboardWrapper = () => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'keyboard-wrapper';
+  document.querySelector('.container').append(wrapper);
+};
+
+const createKeyboardLights = () => {
+  const lights = document.createElement('div');
+  lights.className = 'keyboard-lights';
+  document.querySelector('.keyboard-wrapper').append(lights);
+};
+
+const createKeyboardKeysContainer = () => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'keyboard-keys';
+  document.querySelector('.keyboard-wrapper').append(wrapper);
+};
+
+const createKeyboard = () => {
+  createKeyboardWrapper();
+  createKeyboardLights();
+  createKeyboardKeysContainer();
+};
 
 const createInfoText = (textArray) => {
   for (const text in textArray) {
@@ -83,8 +122,6 @@ const createInfoText = (textArray) => {
   }
 };
 
-createInfoText(texts);
-
 const removeAllChildren = (parent) => {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
@@ -95,7 +132,9 @@ const createRow = (lang) => {
   const fragment = new DocumentFragment();
   const parent = document.querySelector('.keyboard-keys');
 
-  removeAllChildren(parent);
+  if(parent){
+    removeAllChildren(parent);
+  }
 
   for (let i = 0; i < symbols[lang].length; i++) {
     const row = document.createElement('div');
@@ -289,7 +328,7 @@ const checkMainKeys = (key) => {
   }
 };
 
-createRow(lang);
+// createRow(lang);
 
 keys.forEach((key) => {
   key.setAttribute('data-name', key.innerHTML);
@@ -418,6 +457,17 @@ const displayText = (e) => {
   return TEXT_AREA;
 };
 
+const addContent = () => {
+  addSwitcher();
+  addContainer();
+  createTextarea();
+  createKeyboard();
+  createInfoText(texts);
+  createRow(lang);
+};
+
+addContent();
+
 window.addEventListener('keydown', (e) => {
   keys.forEach((key) => {
     e.preventDefault();
@@ -497,7 +547,7 @@ window.addEventListener('keyup', (e) => {
   });
 });
 
-// let ctrlFlag = false;
+
 
 window.onkeydown = (e) => {
   if (e.altKey && e.shiftKey) {
