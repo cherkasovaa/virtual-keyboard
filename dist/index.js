@@ -193,19 +193,23 @@ const assignButtonValues = () => {
   RIGHT_KEY = document.querySelector('.right-key');
   WIN_KEY = document.querySelector('.win-key');
 
+  handleButtons();
+};
+
+const handleButtons = () => {
   if (capsFlag && !CAPSLOCK.classList.contains('active')) {
     CAPSLOCK.classList.add('active');
   }
 
   CAPSLOCK.addEventListener('click', () => {
-    if (capsFlag) {
-      capsFlag = !capsFlag;
+    capsFlag = !capsFlag;
+
+    if (!capsFlag) {
       LocalStorage.setLocalStorage('capsFlag', 0);
       createRow(lang);
       return;
     }
 
-    capsFlag = !capsFlag;
     LocalStorage.setLocalStorage('capsFlag', 1);
     createRow(lang);
     CAPSLOCK.classList.add('active');
@@ -227,9 +231,7 @@ const assignButtonValues = () => {
     key.addEventListener('mouseover', () => {
       key.classList.add('active');
     });
-  });
 
-  keys.forEach((key) => {
     key.addEventListener('mouseout', () => {
       key.classList.remove('active');
 
@@ -237,14 +239,12 @@ const assignButtonValues = () => {
         CAPSLOCK.classList.add('active');
       }
     });
-  });
 
-  keys.forEach((key) => {
     key.addEventListener('click', (e) => {
       displayText(e);
     });
   });
-};
+}
 
 const checkMainKeys = (key) => {
   let arr = ['Backspace', 'Tab', 'Caps Lock', 'Enter', 'Space', 'Win'];
