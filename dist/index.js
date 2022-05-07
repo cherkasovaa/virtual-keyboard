@@ -30,7 +30,7 @@ const symbols = {
   en: [
     ['`', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '-', '=', 'Backspace'],
     ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
-    ['Caps Lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'Enter'],
+    ['Caps Lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter'],
     ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'Shift'],
     ['Ctrl', 'Win', 'Alt', 'Space', 'Alt Gr', 'Ctrl', ['&#8678;', '&#8682;', '&#8681;', '&#8680;']],
   ],
@@ -258,6 +258,13 @@ const checkMainKeys = (key) => {
     key.classList.add('slash-key');
   }
 
+  addShiftClasses(key);
+  addCtrlClasses(key);
+  addAltClasses(key);
+  addArrowClasses(key);
+};
+
+const addShiftClasses = (key) => {
   if (key.innerText === 'Shift') {
     if (count === 0) {
       key.classList.add('shift-key', 'shift-left');
@@ -271,7 +278,9 @@ const checkMainKeys = (key) => {
       return;
     }
   }
+};
 
+const addCtrlClasses = (key) => {
   if (key.innerText === 'Ctrl') {
     if (count === 2) {
       key.classList.add('ctrl-key', 'ctrl-left');
@@ -285,7 +294,9 @@ const checkMainKeys = (key) => {
       return;
     }
   }
+};
 
+const addAltClasses = (key) => {
   if (key.innerText === 'Alt') {
     key.classList.add('alt-key', 'alt-left');
   }
@@ -293,7 +304,9 @@ const checkMainKeys = (key) => {
   if (key.innerText === 'Alt Gr') {
     key.classList.add('alt-key', 'alt-right');
   }
+};
 
+const addArrowClasses = (key) => {
   if (key.innerHTML === '⇦') {
     key.classList.add('left-key');
   }
@@ -330,10 +343,6 @@ const hightlightCapslockKey = (e) => {
     CAPSLOCK.classList.add('active');
   }
 };
-
-// const hightlightKey = (selector) => {
-//   selector.classList.add('active');
-// };
 
 const hightlightShiftsKey = (e) => {
   if (e.code === 'ShiftLeft') {
@@ -415,11 +424,13 @@ const displayText = (e) => {
   }
 
   if (arrows.some((el) => text === el)) {
-    return checkArrows(text);
+    checkArrows(text);
+    return;
   }
 
   if (text in hashMap) {
-    return hashMap[text]();
+    hashMap[text]();
+    return;
   }
 
   TEXT_AREA.value += text;
@@ -462,7 +473,7 @@ addContent();
 window.addEventListener('keydown', (e) => {
   keys.forEach((key) => {
     e.preventDefault();
-    
+
     if (key.getAttribute('data-name') === e.key) {
       key.classList.add('active');
     }
