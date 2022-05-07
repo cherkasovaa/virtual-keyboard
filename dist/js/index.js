@@ -274,7 +274,6 @@ const addCtrlClasses = (key) => {
     if (count === 3) {
       key.classList.add('ctrl-key', 'ctrl-right');
       count = 0;
-      return;
     }
   }
 };
@@ -311,73 +310,30 @@ keys.forEach((key) => {
   key.setAttribute('data-name', key.innerHTML);
 });
 
-const hightlightSpaceKey = (e) => {
-  if (e.code === 'Space') {
-    SPACE.classList.add(ACTIVE);
-  }
-};
+const highlightSpecialKeys = (e) => {
+  const hashMap = {
+    Space: () => SPACE.classList.add(ACTIVE),
+    MetaLeft: () => WIN_KEY.classList.add(ACTIVE),
+    CapsLock: () => CAPSLOCK.classList.add(ACTIVE),
+    ShiftLeft: () => SHIFT_LEFT.classList.add(ACTIVE),
+    ShiftRight: () => SHIFT_RIGHT.classList.add(ACTIVE),
+    ControlLeft: () => CTRL_LEFT.classList.add(ACTIVE),
+    ControlRight: () => CTRL_RIGHT.classList.add(ACTIVE),
+    AltLeft: () => ALT_LEFT.classList.add(ACTIVE),
+    AltRight: () => {
+      ALT_RIGHT.classList.add(ACTIVE);
+      ALT_LEFT.classList.remove(ACTIVE);
+      CTRL_LEFT.classList.remove(ACTIVE);
+    },
+    ArrowLeft: () => LEFT_KEY.classList.add(ACTIVE),
+    ArrowUp: () => UP_KEY.classList.add(ACTIVE),
+    ArrowDown: () => DOWN_KEY.classList.add(ACTIVE),
+    ArrowRight: () => RIGHT_KEY.classList.add(ACTIVE),
+  };
 
-const hightlightWindowKey = (e) => {
-  if (e.code === 'MetaLeft') {
-    WIN_KEY.classList.add(ACTIVE);
-  }
-};
-
-const hightlightCapslockKey = (e) => {
-  if (e.code === 'CapsLock') {
-    CAPSLOCK.classList.add(ACTIVE);
-  }
-};
-
-const hightlightShiftsKey = (e) => {
-  if (e.code === 'ShiftLeft') {
-    SHIFT_LEFT.classList.add(ACTIVE);
-    SHIFT_RIGHT.classList.remove(ACTIVE);
-  }
-
-  if (e.code === 'ShiftRight') {
-    SHIFT_RIGHT.classList.add(ACTIVE);
-    SHIFT_LEFT.classList.remove(ACTIVE);
-  }
-};
-
-const hightlightCtrlKey = (e) => {
-  if (e.code === 'ControlLeft') {
-    CTRL_LEFT.classList.add(ACTIVE);
-  }
-
-  if (e.code === 'ControlRight') {
-    CTRL_RIGHT.classList.add(ACTIVE);
-  }
-};
-
-const hightlightAltKey = (e) => {
-  if (e.code === 'AltLeft') {
-    ALT_RIGHT.classList.remove(ACTIVE);
-    ALT_LEFT.classList.add(ACTIVE);
-  }
-
-  if (e.code === 'AltRight') {
-    ALT_LEFT.classList.remove(ACTIVE);
-    ALT_RIGHT.classList.add(ACTIVE);
-  }
-};
-
-const hightlightArrowKey = (e) => {
-  if (e.code === 'ArrowLeft') {
-    LEFT_KEY.classList.add(ACTIVE);
-  }
-
-  if (e.code === 'ArrowUp') {
-    UP_KEY.classList.add(ACTIVE);
-  }
-
-  if (e.code === 'ArrowDown') {
-    DOWN_KEY.classList.add(ACTIVE);
-  }
-
-  if (e.code === 'ArrowRight') {
-    RIGHT_KEY.classList.add(ACTIVE);
+  if (e.code in hashMap) {
+    hashMap[e.code]();
+    return;
   }
 };
 
@@ -450,13 +406,7 @@ window.addEventListener('keydown', (e) => {
       key.classList.add(ACTIVE);
     }
 
-    hightlightSpaceKey(e);
-    hightlightCapslockKey(e);
-    hightlightShiftsKey(e);
-    hightlightCtrlKey(e);
-    hightlightAltKey(e);
-    hightlightArrowKey(e);
-    hightlightWindowKey(e);
+    highlightSpecialKeys(e);
 
     const hashMap = {
       isRightKey: () => key.innerHTML === e.key,
@@ -496,7 +446,7 @@ const changeKeyboardLayout = (e) => {
     flagShift = !flagShift;
     lang = lang.toUpperCase();
     createRow(lang);
-    hightlightShiftsKey(e);
+    highlightSpecialKeys(e);
   }
 };
 
