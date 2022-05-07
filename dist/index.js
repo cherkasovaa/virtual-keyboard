@@ -25,6 +25,7 @@ let capsFlag = !!+LocalStorage.getLocalStorage('capsFlag') || false;
 let flagShift = false;
 const localStorageLang = LocalStorage.getLocalStorage('lang');
 let lang = localStorageLang || 'en';
+const ACTIVE = 'active';
 
 const symbols = {
   en: [
@@ -201,8 +202,8 @@ const assignButtonValues = () => {
 };
 
 const handleButtons = () => {
-  if (capsFlag && !CAPSLOCK.classList.contains('active')) {
-    CAPSLOCK.classList.add('active');
+  if (capsFlag && !CAPSLOCK.classList.contains(ACTIVE)) {
+    CAPSLOCK.classList.add(ACTIVE);
   }
 
   CAPSLOCK.addEventListener('click', () => {
@@ -216,31 +217,31 @@ const handleButtons = () => {
 
     LocalStorage.setLocalStorage('capsFlag', 1);
     createRow(lang);
-    CAPSLOCK.classList.add('active');
+    CAPSLOCK.classList.add(ACTIVE);
   });
 
   SHIFT_LEFT.addEventListener('mousedown', () => {
     lang = lang.toUpperCase();
     createRow(lang);
-    SHIFT_LEFT.classList.add('active');
+    SHIFT_LEFT.classList.add(ACTIVE);
   });
 
   SHIFT_LEFT.addEventListener('mouseup', () => {
     lang = lang.toLowerCase();
     createRow(lang);
-    SHIFT_LEFT.classList.remove('active');
+    SHIFT_LEFT.classList.remove(ACTIVE);
   });
 
   keys.forEach((key) => {
     key.addEventListener('mouseover', () => {
-      key.classList.add('active');
+      key.classList.add(ACTIVE);
     });
 
     key.addEventListener('mouseout', () => {
-      key.classList.remove('active');
+      key.classList.remove(ACTIVE);
 
       if (capsFlag) {
-        CAPSLOCK.classList.add('active');
+        CAPSLOCK.classList.add(ACTIVE);
       }
     });
 
@@ -332,71 +333,73 @@ keys.forEach((key) => {
   key.setAttribute('data-name', key.innerHTML);
 });
 
-const hightlightSpaceKey = () => {
-  SPACE.classList.add('active');
+const hightlightSpaceKey = (e) => {
+  if (e.code === 'Space') {
+    SPACE.classList.add(ACTIVE);
+  }
 };
 
 const hightlightWindowKey = (e) => {
   if (e.code === 'MetaLeft') {
-    WIN_KEY.classList.add('active');
+    WIN_KEY.classList.add(ACTIVE);
   }
 };
 
 const hightlightCapslockKey = (e) => {
   if (e.code === 'CapsLock') {
-    CAPSLOCK.classList.add('active');
+    CAPSLOCK.classList.add(ACTIVE);
   }
 };
 
 const hightlightShiftsKey = (e) => {
   if (e.code === 'ShiftLeft') {
-    SHIFT_LEFT.classList.add('active');
-    SHIFT_RIGHT.classList.remove('active');
+    SHIFT_LEFT.classList.add(ACTIVE);
+    SHIFT_RIGHT.classList.remove(ACTIVE);
   }
 
   if (e.code === 'ShiftRight') {
-    SHIFT_RIGHT.classList.add('active');
-    SHIFT_LEFT.classList.remove('active');
+    SHIFT_RIGHT.classList.add(ACTIVE);
+    SHIFT_LEFT.classList.remove(ACTIVE);
   }
 };
 
 const hightlightCtrlKey = (e) => {
   if (e.code === 'ControlLeft') {
-    CTRL_LEFT.classList.add('active');
+    CTRL_LEFT.classList.add(ACTIVE);
   }
 
   if (e.code === 'ControlRight') {
-    CTRL_RIGHT.classList.add('active');
+    CTRL_RIGHT.classList.add(ACTIVE);
   }
 };
 
 const hightlightAltKey = (e) => {
   if (e.code === 'AltLeft') {
-    ALT_RIGHT.classList.remove('active');
-    ALT_LEFT.classList.add('active');
+    ALT_RIGHT.classList.remove(ACTIVE);
+    ALT_LEFT.classList.add(ACTIVE);
   }
 
   if (e.code === 'AltRight') {
-    ALT_LEFT.classList.remove('active');
-    ALT_RIGHT.classList.add('active');
+    ALT_LEFT.classList.remove(ACTIVE);
+    ALT_RIGHT.classList.add(ACTIVE);
   }
 };
 
 const hightlightArrowKey = (e) => {
   if (e.code === 'ArrowLeft') {
-    LEFT_KEY.classList.add('active');
+    LEFT_KEY.classList.add(ACTIVE);
   }
 
   if (e.code === 'ArrowUp') {
-    UP_KEY.classList.add('active');
+    UP_KEY.classList.add(ACTIVE);
   }
 
   if (e.code === 'ArrowDown') {
-    DOWN_KEY.classList.add('active');
+    DOWN_KEY.classList.add(ACTIVE);
   }
 
   if (e.code === 'ArrowRight') {
-    RIGHT_KEY.classList.add('active');
+    RIGHT_KEY.classList.add(ACTIVE);
   }
 };
 
@@ -479,7 +482,7 @@ window.addEventListener('keydown', (e) => {
     e.preventDefault();
 
     if (key.getAttribute('data-name') === e.key) {
-      key.classList.add('active');
+      key.classList.add(ACTIVE);
     }
 
     hightlightSpaceKey(e);
@@ -539,7 +542,7 @@ window.addEventListener('keydown', (e) => {
     capsFlag = !capsFlag;
     LocalStorage.setLocalStorage('capsFlag', 1);
     createRow(lang);
-    CAPSLOCK.classList.add('active');
+    CAPSLOCK.classList.add(ACTIVE);
     return;
   }
 
@@ -552,7 +555,7 @@ window.addEventListener('keydown', (e) => {
 
 window.addEventListener('keyup', (e) => {
   keys.forEach((key) => {
-    key.classList.remove('active');
+    key.classList.remove(ACTIVE);
 
     if (e.key === 'Shift') {
       flagShift = !flagShift;
@@ -561,7 +564,7 @@ window.addEventListener('keyup', (e) => {
     }
 
     if (capsFlag) {
-      CAPSLOCK.classList.add('active');
+      CAPSLOCK.classList.add(ACTIVE);
     }
   });
 
