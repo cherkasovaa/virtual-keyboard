@@ -244,10 +244,10 @@ const handleButtons = () => {
       displayText(e);
     });
   });
-}
+};
 
 const checkMainKeys = (key) => {
-  let arr = ['Backspace', 'Tab', 'Caps Lock', 'Enter', 'Space', 'Win'];
+  const arr = ['Backspace', 'Tab', 'Caps Lock', 'Enter', 'Space', 'Win'];
 
   if (arr.some((el) => el === key.innerText)) {
     const className = key.innerText.toLowerCase().split(' ').join('');
@@ -407,7 +407,7 @@ const displayText = (e) => {
     Enter: () => addEnter(),
     Tab: () => addTab(),
     Space: () => addSpace(),
-    ' ': () => addSpace()
+    ' ': () => addSpace(),
   };
 
   if (arr.some((el) => text === el)) {
@@ -505,22 +505,17 @@ window.addEventListener('keydown', (e) => {
 });
 
 const displayArrows = (e, key) => {
-  const isArrowLeft = e.key === 'ArrowLeft' && key.innerHTML === '⇦';
-  const isArrowUp = e.key === 'ArrowUp' && key.innerHTML === '⇪';
-  const isArrowDown = e.key === 'ArrowDown' && key.innerHTML === '⇩';
-  const isArrowRight = e.key === 'ArrowRight' && key.innerHTML === '⇨';
+  const hashMap = {
+    isArrowLeft: () => e.key === 'ArrowLeft' && key.innerHTML === '⇦',
+    isArrowUp: () => e.key === 'ArrowUp' && key.innerHTML === '⇪',
+    isArrowDown: () => e.key === 'ArrowDown' && key.innerHTML === '⇩',
+    isArrowRight: () => e.key === 'ArrowRight' && key.innerHTML === '⇨',
+  };
 
-  if (isArrowLeft) {
-    displayText(e);
-  }
-  if (isArrowUp) {
-    displayText(e);
-  }
-  if (isArrowDown) {
-    displayText(e);
-  }
-  if (isArrowRight) {
-    displayText(e);
+  for (const cond in hashMap) {
+    if (hashMap[cond]()) {
+      displayText(e);
+    }
   }
 };
 
