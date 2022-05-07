@@ -58,9 +58,14 @@ const symbols = {
   ],
 };
 
+const createHTMLElement = (className, elem = 'div') => {
+  const element = document.createElement(elem);
+  element.className = className;
+  return element;
+};
+
 const createSwitcher = () => {
-  const switcher = document.createElement('div');
-  switcher.className = SWITCHER;
+  const switcher = createHTMLElement(SWITCHER);
   if (LocalStorage.getLocalStorage('theme') === 'dark') {
     switcher.classList.add('on');
   }
@@ -74,15 +79,12 @@ const addSwitcher = () => {
 };
 
 const addContainer = () => {
-  const container = document.createElement('div');
-  container.className = 'container';
-
+  const container = createHTMLElement('container');
   BODY.append(container);
 };
 
 const createTextarea = () => {
-  const textarea = document.createElement('textarea');
-  textarea.className = 'text';
+  const textarea = createHTMLElement('text', 'textarea');
   textarea.setAttribute('name', 'textarea');
   textarea.setAttribute('autofocus', 'autofocus');
 
@@ -91,20 +93,17 @@ const createTextarea = () => {
 };
 
 const createKeyboardWrapper = () => {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'keyboard-wrapper';
+  const wrapper = createHTMLElement('keyboard-wrapper');
   document.querySelector('.container').append(wrapper);
 };
 
 const createKeyboardLights = () => {
-  const lights = document.createElement('div');
-  lights.className = 'keyboard-lights';
+  const lights = createHTMLElement('keyboard-lights');
   document.querySelector('.keyboard-wrapper').append(lights);
 };
 
 const createKeyboardKeysContainer = () => {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'keyboard-keys';
+  const wrapper = createHTMLElement('keyboard-keys');
   document.querySelector('.keyboard-wrapper').append(wrapper);
 };
 
@@ -127,8 +126,7 @@ const createRow = (lang) => {
   removeAllChildren(parent);
 
   for (let i = 0; i < symbols[lang].length; i++) {
-    const row = document.createElement('div');
-    row.className = 'row';
+    const row = createHTMLElement('row');
 
     for (const arr in symbols[lang][i]) {
       typeof symbols[lang][i][arr] === 'object'
@@ -145,8 +143,7 @@ const createRow = (lang) => {
 };
 
 const createKeyButton = (el, parent) => {
-  const key = document.createElement('div');
-  key.className = 'keys';
+  const key = createHTMLElement('keys');
   key.innerText = capsFlag ? toUpperCase(el) : el;
 
   checkMainKeys(key);
@@ -155,12 +152,10 @@ const createKeyButton = (el, parent) => {
 };
 
 const createArrowsBlock = (obj, parent) => {
-  const col = document.createElement('div');
-  col.className = 'col';
+  const col = createHTMLElement('col');
 
   for (const item in obj) {
-    const key = document.createElement('div');
-    key.className = 'keys';
+    const key = createHTMLElement('keys');
     key.innerHTML = obj[item];
     checkMainKeys(key);
     key.setAttribute('data-name', key.innerHTML);
