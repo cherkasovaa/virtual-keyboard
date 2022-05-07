@@ -123,37 +123,16 @@ const createRow = (lang) => {
   const fragment = new DocumentFragment();
   const parent = document.querySelector('.keyboard-keys');
 
-  if (parent) {
-    removeAllChildren(parent);
-  }
+  removeAllChildren(parent);
 
   for (let i = 0; i < symbols[lang].length; i++) {
     const row = document.createElement('div');
     row.className = 'row';
 
     for (const arr in symbols[lang][i]) {
-      if (typeof symbols[lang][i][arr] === 'object') {
-        const col = document.createElement('div');
-        col.className = 'col';
-
-        for (const keyy in symbols[lang][i][arr]) {
-          const key = document.createElement('div');
-          key.className = 'keys';
-          key.innerHTML = symbols[lang][i][arr][keyy];
-          checkMainKeys(key);
-          key.setAttribute('data-name', key.innerHTML);
-          col.append(key);
-          row.append(col);
-        }
-      } else {
-        const key = document.createElement('div');
-        key.className = 'keys';
-        key.innerText = capsFlag ? toUpperCase(symbols[lang][i][arr]) : symbols[lang][i][arr];
-
-        checkMainKeys(key);
-        key.setAttribute('data-name', key.innerHTML);
-        row.append(key);
-      }
+      typeof symbols[lang][i][arr] === 'object'
+        ? createArrowsBlock(symbols[lang][i][arr], row)
+        : createKeyButton(symbols[lang][i][arr], row);
     }
 
     fragment.appendChild(row);
@@ -162,6 +141,31 @@ const createRow = (lang) => {
   parent.append(fragment);
 
   assignButtonValues();
+};
+
+const createKeyButton = (el, parent) => {
+  const key = document.createElement('div');
+  key.className = 'keys';
+  key.innerText = capsFlag ? toUpperCase(el) : el;
+
+  checkMainKeys(key);
+  key.setAttribute('data-name', key.innerHTML);
+  parent.append(key);
+};
+
+const createArrowsBlock = (obj, parent) => {
+  const col = document.createElement('div');
+  col.className = 'col';
+
+  for (const item in obj) {
+    const key = document.createElement('div');
+    key.className = 'keys';
+    key.innerHTML = obj[item];
+    checkMainKeys(key);
+    key.setAttribute('data-name', key.innerHTML);
+    col.append(key);
+    parent.append(col);
+  }
 };
 
 const toUpperCase = (value) => {
