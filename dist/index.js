@@ -1,8 +1,15 @@
 import LocalStorage from './LocalStorage.js';
 import {DARK_THEME, ON, Switcher} from './Switcher.js';
 import Information from './Information.js';
+import {symbols} from './symbols.js';
 
 const BODY = document.body;
+const localStorageLang = LocalStorage.getLocalStorage('lang');
+const SWITCHER = 'switcher';
+const ACTIVE = 'active';
+const RU = 'ru';
+const EN = 'en';
+
 let keys = document.querySelectorAll('.keys');
 let SPACE = document.querySelector('.space-key');
 let SHIFT_LEFT = document.querySelector('.shift-left');
@@ -19,47 +26,10 @@ let RIGHT_KEY = document.querySelector('.right-key');
 let WIN_KEY = document.querySelector('.win-key');
 let TEXT_AREA;
 let container;
-
-const SWITCHER = 'switcher';
 let count = 0;
 let capsFlag = !!+LocalStorage.getLocalStorage('capsFlag') || false;
 let flagShift = false;
-const localStorageLang = LocalStorage.getLocalStorage('lang');
 let lang = localStorageLang || 'en';
-const ACTIVE = 'active';
-const RU = 'ru';
-const EN = 'en';
-
-const symbols = {
-  en: [
-    ['`', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '-', '=', 'Backspace'],
-    ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
-    ['Caps Lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'Enter'],
-    ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'Shift'],
-    ['Ctrl', 'Win', 'Alt', 'Space', 'Alt Gr', 'Ctrl', ['&#8678;', '&#8682;', '&#8681;', '&#8680;']],
-  ],
-  EN: [
-    ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'Backspace'],
-    ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '|'],
-    ['Caps Lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', 'Enter'],
-    ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 'Shift'],
-    ['Ctrl', 'Win', 'Alt', 'Space', 'Alt Gr', 'Ctrl', ['&#8678;', '&#8682;', '&#8681;', '&#8680;']],
-  ],
-  ru: [
-    ['ё', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '-', '=', 'Backspace'],
-    ['Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\'],
-    ['Caps Lock', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'Enter'],
-    ['Shift', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', 'Shift'],
-    ['Ctrl', 'Win', 'Alt', 'Space', 'Alt Gr', 'Ctrl', ['&#8678;', '&#8682;', '&#8681;', '&#8680;']],
-  ],
-  RU: [
-    ['Ё', '!', '"', '№', ';', '%', ':', '?', '*', '(', ')', '_', '+', 'Backspace'],
-    ['Tab', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '|'],
-    ['Caps Lock', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', 'Enter'],
-    ['Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', ',', 'Shift'],
-    ['Ctrl', 'Win', 'Alt', 'Space', 'Alt Gr', 'Ctrl', ['&#8678;', '&#8682;', '&#8681;', '&#8680;']],
-  ],
-};
 
 const createHTMLElement = (className, elem = 'div') => {
   const element = document.createElement(elem);
@@ -166,6 +136,15 @@ const createArrowsBlock = (obj, parent) => {
     col.append(key);
     parent.append(col);
   }
+};
+
+const addContent = () => {
+  addSwitcher();
+  addContainer();
+  addTextarea();
+  createKeyboard();
+  new Information(container).createInfoText();
+  createRow(lang);
 };
 
 const toUpperCase = (value) => {
@@ -463,18 +442,6 @@ const checkArrows = (text) => {
   TEXT_AREA.value += text;
 };
 
-const addContent = () => {
-  addSwitcher();
-  addContainer();
-  addTextarea();
-  createKeyboard();
-  // const container = document.querySelector('.container');
-  new Information(container).createInfoText();
-  createRow(lang);
-};
-
-addContent();
-
 window.addEventListener('keydown', (e) => {
   keys.forEach((key) => {
     e.preventDefault();
@@ -599,5 +566,7 @@ const checkCase = () => {
 
   return isUpperCase ? 'UpperCase' : 'LowerCase';
 };
+
+addContent();
 
 document.body.dataset.theme = LocalStorage.getLocalStorage('theme');
