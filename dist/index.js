@@ -219,9 +219,22 @@ const assignButtonValues = () => {
   RIGHT_KEY = document.querySelector('.right-key');
   WIN_KEY = document.querySelector('.win-key');
 
-  if(capsFlag && !CAPSLOCK.classList.contains('active')){
+  if (capsFlag && !CAPSLOCK.classList.contains('active')) {
     CAPSLOCK.classList.add('active');
   }
+
+  CAPSLOCK.addEventListener('click', (e) => {
+    if (!capsFlag) {
+      capsFlag = !capsFlag;
+      setLocalStorage('capsFlag', 1);
+      createRow(lang);
+      CAPSLOCK.classList.add('active');
+    } else {
+      capsFlag = !capsFlag;
+      setLocalStorage('capsFlag', 0);
+      createRow(lang);
+    }
+  })
 
   SHIFT_LEFT.addEventListener('mousedown', () => {
     lang = lang.toUpperCase();
@@ -244,6 +257,10 @@ const assignButtonValues = () => {
   keys.forEach((key) => {
     key.addEventListener('mouseout', () => {
       key.classList.remove('active');
+
+      if(capsFlag) {
+        CAPSLOCK.classList.add('active');
+      }
     });
   });
 
@@ -511,13 +528,17 @@ window.addEventListener('keydown', (e) => {
   });
 });
 
-window.addEventListener('keydown', (e) => {
+const changeKeyboardLayout = (e) => {
   if (e.key === 'Shift' && !flagShift) {
     flagShift = !flagShift;
     lang = lang.toUpperCase();
     createRow(lang);
     hightlightShiftsKey(e);
   }
+};
+
+window.addEventListener('keydown', (e) => {
+  changeKeyboardLayout(e);
 
   if (e.key === 'CapsLock' && !capsFlag) {
     capsFlag = !capsFlag;
@@ -558,7 +579,7 @@ window.onkeydown = (e) => {
   if (e.altKey && e.shiftKey) {
     e.preventDefault();
     changeLang();
-    let isCaps = capsFlag ? 1 : 0;
+    const isCaps = capsFlag ? 1 : 0;
     setLocalStorage('capsFlag', isCaps);
     createRow(lang);
     return;
@@ -586,7 +607,7 @@ const checkCase = () => {
 };
 
 switcherTheme.addEventListener('click', () => {
-  switcherTheme.classList.contains('on') ? switcherTheme.classList.remove('on') : switcherTheme.classList.add('on')
+  switcherTheme.classList.contains('on') ? switcherTheme.classList.remove('on') : switcherTheme.classList.add('on');
 
   document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
   setLocalStorage('theme', document.body.dataset.theme);
