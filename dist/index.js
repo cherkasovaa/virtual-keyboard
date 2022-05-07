@@ -1,3 +1,5 @@
+import LocalStorage from './LocalStorage.js';
+
 const BODY = document.body;
 let keys = document.querySelectorAll('.keys');
 let SPACE = document.querySelector('.space-key');
@@ -17,12 +19,10 @@ let TEXT_AREA;
 let switcherTheme;
 
 let count = 0;
-let capsFlag = !!+getLocalStorage('capsFlag') || false;
+let capsFlag = !!+LocalStorage.getLocalStorage('capsFlag') || false;
 let flagShift = false;
-const defaultLanguage = 'en';
-const localStorageLang = getLocalStorage('lang');
-let lang = localStorageLang || defaultLanguage;
-// let theme = getLocalStorage('theme') || 'light';
+const localStorageLang = LocalStorage.getLocalStorage('lang');
+let lang = localStorageLang || 'en';
 
 const symbols = {
   en: [
@@ -63,7 +63,7 @@ const texts = [
 const createSwitcher = () => {
   const switcher = document.createElement('div');
   switcher.className = 'switch';
-  if (getLocalStorage('theme') === 'dark') {
+  if (LocalStorage.getLocalStorage('theme') === 'dark') {
     switcher.classList.add('on');
   }
   return switcher;
@@ -223,18 +223,18 @@ const assignButtonValues = () => {
     CAPSLOCK.classList.add('active');
   }
 
-  CAPSLOCK.addEventListener('click', (e) => {
+  CAPSLOCK.addEventListener('click', () => {
     if (!capsFlag) {
       capsFlag = !capsFlag;
-      setLocalStorage('capsFlag', 1);
+      LocalStorage.setLocalStorage('capsFlag', 1);
       createRow(lang);
       CAPSLOCK.classList.add('active');
     } else {
       capsFlag = !capsFlag;
-      setLocalStorage('capsFlag', 0);
+      LocalStorage.setLocalStorage('capsFlag', 0);
       createRow(lang);
     }
-  })
+  });
 
   SHIFT_LEFT.addEventListener('mousedown', () => {
     lang = lang.toUpperCase();
@@ -258,7 +258,7 @@ const assignButtonValues = () => {
     key.addEventListener('mouseout', () => {
       key.classList.remove('active');
 
-      if(capsFlag) {
+      if (capsFlag) {
         CAPSLOCK.classList.add('active');
       }
     });
@@ -542,7 +542,7 @@ window.addEventListener('keydown', (e) => {
 
   if (e.key === 'CapsLock' && !capsFlag) {
     capsFlag = !capsFlag;
-    setLocalStorage('capsFlag', 1);
+    LocalStorage.setLocalStorage('capsFlag', 1);
     createRow(lang);
     CAPSLOCK.classList.add('active');
     return;
@@ -550,7 +550,7 @@ window.addEventListener('keydown', (e) => {
 
   if (e.key === 'CapsLock' && capsFlag) {
     capsFlag = !capsFlag;
-    setLocalStorage('capsFlag', 0);
+    LocalStorage.setLocalStorage('capsFlag', 0);
     createRow(lang);
   }
 });
@@ -571,7 +571,7 @@ window.addEventListener('keyup', (e) => {
   });
 
   if (!capsFlag) {
-    setLocalStorage('capsFlag', 0);
+    LocalStorage.setLocalStorage('capsFlag', 0);
   }
 });
 
@@ -580,7 +580,7 @@ window.onkeydown = (e) => {
     e.preventDefault();
     changeLang();
     const isCaps = capsFlag ? 1 : 0;
-    setLocalStorage('capsFlag', isCaps);
+    LocalStorage.setLocalStorage('capsFlag', isCaps);
     createRow(lang);
     return;
   }
@@ -595,7 +595,7 @@ const changeLang = () => {
     lang = register === 'UpperCase' ? 'EN' : 'en';
   }
 
-  setLocalStorage('lang', lang.toLowerCase());
+  LocalStorage.setLocalStorage('lang', lang.toLowerCase());
 };
 
 const checkCase = () => {
@@ -610,15 +610,8 @@ switcherTheme.addEventListener('click', () => {
   switcherTheme.classList.contains('on') ? switcherTheme.classList.remove('on') : switcherTheme.classList.add('on');
 
   document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
-  setLocalStorage('theme', document.body.dataset.theme);
+  LocalStorage.setLocalStorage('theme', document.body.dataset.theme);
 });
 
-document.body.dataset.theme = getLocalStorage('theme');
+document.body.dataset.theme = LocalStorage.getLocalStorage('theme');
 
-const setLocalStorage = (key, value) => {
-  localStorage.setItem(key, value);
-};
-
-function getLocalStorage(key) {
-  return localStorage.getItem(key);
-}
