@@ -1,6 +1,10 @@
 import LocalStorage from './LocalStorage.js';
 
-class Switcher {
+export const DARK_THEME = 'dark';
+export const LIGHT_THEME = 'light';
+export const ON = 'on';
+
+export class Switcher {
   constructor(selector) {
     this.$el = document.querySelector(`.${selector}`);
     this.bindEvent();
@@ -11,17 +15,15 @@ class Switcher {
   }
 
   toggle() {
-    this.classList.contains('on') ? this.classList.remove('on') : this.classList.add('on');
+    this.classList.contains(ON) ? this.classList.remove(ON) : this.classList.add(ON);
 
     Switcher.changeTheme();
   }
 
   static changeTheme() {
-    const isDarkTheme = document.body.dataset.theme === 'dark';
+    const isDarkTheme = document.body.dataset.theme === DARK_THEME;
 
-    document.body.dataset.theme = isDarkTheme ? 'light' : 'dark';
+    document.body.dataset.theme = isDarkTheme ? LIGHT_THEME : DARK_THEME;
     LocalStorage.setLocalStorage('theme', document.body.dataset.theme);
   }
 }
-
-export default Switcher;
