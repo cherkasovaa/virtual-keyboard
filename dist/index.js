@@ -1,5 +1,6 @@
 import LocalStorage from './LocalStorage.js';
 import Switcher from './Switcher.js';
+import Information from './Information.js';
 
 const BODY = document.body;
 let keys = document.querySelectorAll('.keys');
@@ -56,11 +57,6 @@ const symbols = {
   ],
 };
 
-const texts = [
-  'Клавиатура создана в операционной системе Windows',
-  'Для смены языка используется комбинация клавиш Shift left + Alt left',
-];
-
 const createSwitcher = () => {
   const switcher = document.createElement('div');
   switcher.className = SWITCHER;
@@ -115,16 +111,6 @@ const createKeyboard = () => {
   createKeyboardWrapper();
   createKeyboardLights();
   createKeyboardKeysContainer();
-};
-
-const createInfoText = (textArray) => {
-  for (const text in textArray) {
-    const paragraph = document.createElement('p');
-    paragraph.className = 'info';
-    paragraph.innerText = textArray[text];
-
-    document.querySelector('.container').appendChild(paragraph);
-  }
 };
 
 const removeAllChildren = (parent) => {
@@ -498,7 +484,8 @@ const addContent = () => {
   addContainer();
   createTextarea();
   createKeyboard();
-  createInfoText(texts);
+  const container = document.querySelector('.container');
+  new Information(container).createInfoText();
   createRow(lang);
 };
 
@@ -553,7 +540,6 @@ window.addEventListener('keydown', (e) => {
       displayText(e);
     }
 
-    console.log(e.key, 'e.key', key.innerHTML, 'key.innerHTML')
   });
 });
 
