@@ -141,17 +141,14 @@ const createRow = (lang) => {
           key.className = 'keys';
           key.innerHTML = symbols[lang][i][arr][keyy];
           checkMainKeys(key);
+          key.setAttribute('data-name', key.innerHTML);
           col.append(key);
           row.append(col);
         }
       } else {
         const key = document.createElement('div');
         key.className = 'keys';
-        if (capsFlag) {
-          key.innerText = toUpperCase(symbols[lang][i][arr]);
-        } else {
-          key.innerText = symbols[lang][i][arr];
-        }
+        key.innerText = capsFlag ? toUpperCase(symbols[lang][i][arr]) : symbols[lang][i][arr];
 
         checkMainKeys(key);
         key.setAttribute('data-name', key.innerHTML);
@@ -168,20 +165,11 @@ const createRow = (lang) => {
 };
 
 const toUpperCase = (value) => {
-  if (
-    value === 'Tab' ||
-    value === 'Backspace' ||
-    value === 'Enter' ||
-    value === 'Caps Lock' ||
-    value === 'Shift' ||
-    value === 'Ctrl' ||
-    value === 'Win' ||
-    value === 'Alt' ||
-    value === 'Alt Gr' ||
-    value === 'Space'
-  ) {
+  const arr = ['Tab', 'Backspace', 'Enter', 'Caps Lock', 'Shift', 'Ctrl', 'Win', 'Alt', 'Alt Gr', 'Space'];
+  if (arr.some((el) => value === el)) {
     return value;
   }
+
   if (isNaN(value) && value.match(/[а-яa-z]/g)) {
     return value.toUpperCase();
   }
@@ -210,16 +198,17 @@ const assignButtonValues = () => {
   }
 
   CAPSLOCK.addEventListener('click', () => {
-    if (!capsFlag) {
-      capsFlag = !capsFlag;
-      LocalStorage.setLocalStorage('capsFlag', 1);
-      createRow(lang);
-      CAPSLOCK.classList.add('active');
-    } else {
+    if (capsFlag) {
       capsFlag = !capsFlag;
       LocalStorage.setLocalStorage('capsFlag', 0);
       createRow(lang);
+      return;
     }
+
+    capsFlag = !capsFlag;
+    LocalStorage.setLocalStorage('capsFlag', 1);
+    createRow(lang);
+    CAPSLOCK.classList.add('active');
   });
 
   SHIFT_LEFT.addEventListener('mousedown', () => {
@@ -258,24 +247,15 @@ const assignButtonValues = () => {
 };
 
 const checkMainKeys = (key) => {
-  if (key.innerText === 'Backspace') {
-    key.classList.add('backspace-key');
-  }
+  let arr = ['Backspace', 'Tab', 'Caps Lock', 'Enter', 'Space', 'Win'];
 
-  if (key.innerText === 'Tab') {
-    key.classList.add('tab-key');
+  if (arr.some((el) => el === key.innerText)) {
+    const className = key.innerText.toLowerCase().split(' ').join('');
+    key.classList.add(`${className}-key`);
   }
 
   if (key.innerText === '\\' || key.innerText === '|') {
     key.classList.add('slash-key');
-  }
-
-  if (key.innerText === 'Caps Lock') {
-    key.classList.add('capslock-key');
-  }
-
-  if (key.innerText === 'Enter') {
-    key.classList.add('enter-key');
   }
 
   if (key.innerText === 'Shift') {
@@ -293,7 +273,6 @@ const checkMainKeys = (key) => {
   }
 
   if (key.innerText === 'Ctrl') {
-    key.classList.add('ctrl-key');
     if (count === 2) {
       key.classList.add('ctrl-key', 'ctrl-left');
       count++;
@@ -315,10 +294,6 @@ const checkMainKeys = (key) => {
     key.classList.add('alt-key', 'alt-right');
   }
 
-  if (key.innerHTML === 'Space') {
-    key.classList.add('space-key');
-  }
-
   if (key.innerHTML === '⇦') {
     key.classList.add('left-key');
   }
@@ -334,20 +309,14 @@ const checkMainKeys = (key) => {
   if (key.innerHTML === '⇨') {
     key.classList.add('right-key');
   }
-
-  if (key.innerHTML === 'Win') {
-    key.classList.add('win-key');
-  }
 };
 
 keys.forEach((key) => {
   key.setAttribute('data-name', key.innerHTML);
 });
 
-const hightlightSpaceKey = (e) => {
-  if (e.code === 'Space') {
-    SPACE.classList.add('active');
-  }
+const hightlightSpaceKey = () => {
+  SPACE.classList.add('active');
 };
 
 const hightlightWindowKey = (e) => {
@@ -361,6 +330,10 @@ const hightlightCapslockKey = (e) => {
     CAPSLOCK.classList.add('active');
   }
 };
+
+// const hightlightKey = (selector) => {
+//   selector.classList.add('active');
+// };
 
 const hightlightShiftsKey = (e) => {
   if (e.code === 'ShiftLeft') {
@@ -426,56 +399,51 @@ const addEnter = () => (TEXT_AREA.value += '\n');
 const addTab = () => (TEXT_AREA.value += ' '.repeat(4));
 
 const displayText = (e) => {
-  let text = e.key || e.currentTarget.dataset.name;
+  const text = e.key || e.currentTarget.dataset.name;
+  const arr = ['Alt', 'Alt Gr', 'Control', 'CapsLock', 'Caps Lock', 'Meta', 'Win', 'Ctrl', 'Shift'];
+  const arrows = ['ArrowLeft', 'ArrowUp', 'ArrowDown', 'ArrowRight'];
+  const hashMap = {
+    Backspace: () => deleteText(),
+    Enter: () => addEnter(),
+    Tab: () => addTab(),
+    Space: () => addSpace(),
+    ' ': () => addSpace()
+  };
 
-  if (text === 'Backspace') {
-    return deleteText();
-  }
-
-  if (text === 'Enter') {
-    return addEnter();
-  }
-
-  if (text === 'Shift') {
+  if (arr.some((el) => text === el)) {
     return;
   }
 
-  if (
-    text === 'Alt' ||
-    text === 'Alt Gr' ||
-    text === 'Control' ||
-    text === 'CapsLock' ||
-    text === 'Caps Lock' ||
-    text === 'Meta' ||
-    text === 'Win' ||
-    text === 'Ctrl'
-  ) {
-    return;
+  if (arrows.some((el) => text === el)) {
+    return checkArrows(text);
   }
 
-  if (text === 'Tab') {
-    return addTab();
-  }
-
-  if (e.code === 'Space' || text === 'Space') {
-    return addSpace();
-  }
-
-  if (text === 'ArrowLeft') {
-    text = '⇦';
-  }
-  if (text === 'ArrowUp') {
-    text = '⇪';
-  }
-  if (text === 'ArrowDown') {
-    text = '⇩';
-  }
-  if (text === 'ArrowRight') {
-    text = '⇨';
+  if (text in hashMap) {
+    return hashMap[text]();
   }
 
   TEXT_AREA.value += text;
-  return TEXT_AREA;
+};
+
+const checkArrows = (text) => {
+  switch (text) {
+    case 'ArrowLeft':
+      text = '⇦';
+      break;
+    case 'ArrowUp':
+      text = '⇪';
+      break;
+    case 'ArrowDown':
+      text = '⇩';
+      break;
+    case 'ArrowRight':
+      text = '⇨';
+      break;
+    default:
+      break;
+  }
+
+  TEXT_AREA.value += text;
 };
 
 const addContent = () => {
@@ -492,14 +460,13 @@ const addContent = () => {
 addContent();
 
 window.addEventListener('keydown', (e) => {
+  console.log(e);
   keys.forEach((key) => {
     e.preventDefault();
-
     if (key.getAttribute('data-name') === e.key) {
       key.classList.add('active');
     }
 
-    hightlightSpaceKey(e);
     hightlightCapslockKey(e);
     hightlightShiftsKey(e);
     hightlightCtrlKey(e);
@@ -509,39 +476,53 @@ window.addEventListener('keydown', (e) => {
 
     if (key.innerHTML === e.key) {
       displayText(e);
+      return;
     }
 
-    if (key.innerHTML === 'Space' && e.code === 'Space') {
+    if (e.key === ' ' && key.innerHTML === 'Space') {
+      hightlightSpaceKey(e);
       displayText(e);
+      return;
     }
 
     if (e.key === '&' && key.innerHTML === '&amp;') {
       displayText(e);
+      return;
     }
 
     if (e.key === '>' && key.innerHTML === '&gt;') {
       displayText(e);
+      return;
     }
 
     if (e.key === '<' && key.innerHTML === '&lt;') {
       displayText(e);
+      return;
     }
 
-    if (e.key === 'ArrowLeft' && key.innerHTML === '⇦') {
-      displayText(e);
-    }
-    if (e.key === 'ArrowUp' && key.innerHTML === '⇪') {
-      displayText(e);
-    }
-    if (e.key === 'ArrowDown' && key.innerHTML === '⇩') {
-      displayText(e);
-    }
-    if (e.key === 'ArrowRight' && key.innerHTML === '⇨') {
-      displayText(e);
-    }
-
+    displayArrows(e, key);
   });
 });
+
+const displayArrows = (e, key) => {
+  const isArrowLeft = e.key === 'ArrowLeft' && key.innerHTML === '⇦';
+  const isArrowUp = e.key === 'ArrowUp' && key.innerHTML === '⇪';
+  const isArrowDown = e.key === 'ArrowDown' && key.innerHTML === '⇩';
+  const isArrowRight = e.key === 'ArrowRight' && key.innerHTML === '⇨';
+
+  if (isArrowLeft) {
+    displayText(e);
+  }
+  if (isArrowUp) {
+    displayText(e);
+  }
+  if (isArrowDown) {
+    displayText(e);
+  }
+  if (isArrowRight) {
+    displayText(e);
+  }
+};
 
 const changeKeyboardLayout = (e) => {
   if (e.key === 'Shift' && !flagShift) {
