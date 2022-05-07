@@ -440,7 +440,7 @@ const addEnter = () => (TEXT_AREA.value += '\n');
 const addTab = () => (TEXT_AREA.value += ' '.repeat(4));
 
 const displayText = (e) => {
-  const text = e.key || e.currentTarget.dataset.name;
+  let text = e.key || e.currentTarget.dataset.name;
 
   if (text === 'Backspace') {
     return deleteText();
@@ -473,6 +473,19 @@ const displayText = (e) => {
 
   if (e.code === 'Space' || text === 'Space') {
     return addSpace();
+  }
+
+  if (text === 'ArrowLeft') {
+    text = '⇦';
+  }
+  if (text === 'ArrowUp') {
+    text = '⇪';
+  }
+  if (text === 'ArrowDown') {
+    text = '⇩';
+  }
+  if (text === 'ArrowRight') {
+    text = '⇨';
   }
 
   TEXT_AREA.value += text;
@@ -526,6 +539,21 @@ window.addEventListener('keydown', (e) => {
     if (e.key === '<' && key.innerHTML === '&lt;') {
       displayText(e);
     }
+
+    if (e.key === 'ArrowLeft' && key.innerHTML === '⇦') {
+      displayText(e);
+    }
+    if (e.key === 'ArrowUp' && key.innerHTML === '⇪') {
+      displayText(e);
+    }
+    if (e.key === 'ArrowDown' && key.innerHTML === '⇩') {
+      displayText(e);
+    }
+    if (e.key === 'ArrowRight' && key.innerHTML === '⇨') {
+      displayText(e);
+    }
+
+    console.log(e.key, 'e.key', key.innerHTML, 'key.innerHTML')
   });
 });
 
