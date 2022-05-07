@@ -1,4 +1,5 @@
 import LocalStorage from './LocalStorage.js';
+import Switcher from './Switcher.js';
 
 const BODY = document.body;
 let keys = document.querySelectorAll('.keys');
@@ -16,8 +17,8 @@ let DOWN_KEY = document.querySelector('.down-key');
 let RIGHT_KEY = document.querySelector('.right-key');
 let WIN_KEY = document.querySelector('.win-key');
 let TEXT_AREA;
-let switcherTheme;
 
+const SWITCHER = 'switcher';
 let count = 0;
 let capsFlag = !!+LocalStorage.getLocalStorage('capsFlag') || false;
 let flagShift = false;
@@ -62,7 +63,7 @@ const texts = [
 
 const createSwitcher = () => {
   const switcher = document.createElement('div');
-  switcher.className = 'switch';
+  switcher.className = SWITCHER;
   if (LocalStorage.getLocalStorage('theme') === 'dark') {
     switcher.classList.add('on');
   }
@@ -70,10 +71,9 @@ const createSwitcher = () => {
 };
 
 const addSwitcher = () => {
-  const switcher = createSwitcher();
+  let switcher = createSwitcher();
   BODY.append(switcher);
-
-  switcherTheme = document.querySelector('.switch');
+  switcher = new Switcher(SWITCHER);
 };
 
 const addContainer = () => {
@@ -481,6 +481,7 @@ const displayText = (e) => {
 
 const addContent = () => {
   addSwitcher();
+
   addContainer();
   createTextarea();
   createKeyboard();
@@ -606,12 +607,4 @@ const checkCase = () => {
   }
 };
 
-switcherTheme.addEventListener('click', () => {
-  switcherTheme.classList.contains('on') ? switcherTheme.classList.remove('on') : switcherTheme.classList.add('on');
-
-  document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
-  LocalStorage.setLocalStorage('theme', document.body.dataset.theme);
-});
-
 document.body.dataset.theme = LocalStorage.getLocalStorage('theme');
-
