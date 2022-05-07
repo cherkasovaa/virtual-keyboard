@@ -15,12 +15,13 @@ let RIGHT_KEY = document.querySelector('.right-key');
 let WIN_KEY = document.querySelector('.win-key');
 let TEXT_AREA;
 let switcherTheme;
-// const wrapper = document.querySelector('.keyboard-wrapper');
 
 let count = 0;
-let capsFlag = false;
+let capsFlag = !!+getLocalStorage('capsFlag') || false;
 let flagShift = false;
-let lang = 'en';
+const defaultLanguage = 'en';
+const localStorageLang = getLocalStorage('lang');
+let lang = localStorageLang || defaultLanguage;
 
 const symbols = {
   en: [
@@ -132,7 +133,7 @@ const createRow = (lang) => {
   const fragment = new DocumentFragment();
   const parent = document.querySelector('.keyboard-keys');
 
-  if(parent){
+  if (parent) {
     removeAllChildren(parent);
   }
 
@@ -213,6 +214,10 @@ const assignButtonValues = () => {
   DOWN_KEY = document.querySelector('.down-key');
   RIGHT_KEY = document.querySelector('.right-key');
   WIN_KEY = document.querySelector('.win-key');
+
+  if(capsFlag && !CAPSLOCK.classList.contains('active')){
+    CAPSLOCK.classList.add('active');
+  }
 
   SHIFT_LEFT.addEventListener('mousedown', () => {
     lang = lang.toUpperCase();
@@ -328,8 +333,6 @@ const checkMainKeys = (key) => {
   }
 };
 
-// createRow(lang);
-
 keys.forEach((key) => {
   key.setAttribute('data-name', key.innerHTML);
 });
@@ -366,12 +369,10 @@ const hightlightShiftsKey = (e) => {
 
 const hightlightCtrlKey = (e) => {
   if (e.code === 'ControlLeft') {
-    // CTRL_RIGHT.classList.remove('active');
     CTRL_LEFT.classList.add('active');
   }
 
   if (e.code === 'ControlRight') {
-    // CTRL_LEFT.classList.remove('active');
     CTRL_RIGHT.classList.add('active');
   }
 };
@@ -516,6 +517,7 @@ window.addEventListener('keydown', (e) => {
 
   if (e.key === 'CapsLock' && !capsFlag) {
     capsFlag = !capsFlag;
+    setLocalStorage('capsFlag', 1);
     createRow(lang);
     CAPSLOCK.classList.add('active');
     return;
@@ -523,16 +525,13 @@ window.addEventListener('keydown', (e) => {
 
   if (e.key === 'CapsLock' && capsFlag) {
     capsFlag = !capsFlag;
+    setLocalStorage('capsFlag', 0);
     createRow(lang);
   }
 });
 
 window.addEventListener('keyup', (e) => {
   keys.forEach((key) => {
-    if (capsFlag) {
-      CAPSLOCK.classList.add('active');
-    } 
-    
     key.classList.remove('active');
 
     if (e.key === 'Shift') {
@@ -545,14 +544,18 @@ window.addEventListener('keyup', (e) => {
       CAPSLOCK.classList.add('active');
     }
   });
+
+  if (!capsFlag) {
+    setLocalStorage('capsFlag', 0);
+  }
 });
-
-
 
 window.onkeydown = (e) => {
   if (e.altKey && e.shiftKey) {
     e.preventDefault();
     changeLang();
+    let isCaps = capsFlag ? 1 : 0;
+    setLocalStorage('capsFlag', isCaps);
     createRow(lang);
     return;
   }
@@ -566,6 +569,8 @@ const changeLang = () => {
   } else {
     lang = register === 'UpperCase' ? 'EN' : 'en';
   }
+
+  setLocalStorage('lang', lang.toLowerCase());
 };
 
 const checkCase = () => {
@@ -582,3 +587,11 @@ switcherTheme.addEventListener('click', () => {
 
   document.body.dataset.theme = theme === 'dark' ? 'light' : 'dark';
 });
+
+const setLocalStorage = (key, value) => {
+  localStorage.setItem(key, value);
+};
+
+function getLocalStorage(key) {
+  return localStorage.getItem(key);
+}
