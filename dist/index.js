@@ -1,5 +1,5 @@
 import LocalStorage from './LocalStorage.js';
-import Switcher from './Switcher.js';
+import {DARK_THEME, ON, Switcher} from './Switcher.js';
 import Information from './Information.js';
 
 const BODY = document.body;
@@ -18,6 +18,7 @@ let DOWN_KEY = document.querySelector('.down-key');
 let RIGHT_KEY = document.querySelector('.right-key');
 let WIN_KEY = document.querySelector('.win-key');
 let TEXT_AREA;
+let container;
 
 const SWITCHER = 'switcher';
 let count = 0;
@@ -26,12 +27,14 @@ let flagShift = false;
 const localStorageLang = LocalStorage.getLocalStorage('lang');
 let lang = localStorageLang || 'en';
 const ACTIVE = 'active';
+const RU = 'ru';
+const EN = 'en';
 
 const symbols = {
   en: [
     ['`', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '-', '=', 'Backspace'],
     ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
-    ['Caps Lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter'],
+    ['Caps Lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'Enter'],
     ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'Shift'],
     ['Ctrl', 'Win', 'Alt', 'Space', 'Alt Gr', 'Ctrl', ['&#8678;', '&#8682;', '&#8681;', '&#8680;']],
   ],
@@ -66,8 +69,8 @@ const createHTMLElement = (className, elem = 'div') => {
 
 const createSwitcher = () => {
   const switcher = createHTMLElement(SWITCHER);
-  if (LocalStorage.getLocalStorage('theme') === 'dark') {
-    switcher.classList.add('on');
+  if (LocalStorage.getLocalStorage('theme') === DARK_THEME) {
+    switcher.classList.add(ON);
   }
   return switcher;
 };
@@ -79,38 +82,39 @@ const addSwitcher = () => {
 };
 
 const addContainer = () => {
-  const container = createHTMLElement('container');
-  BODY.append(container);
+  const containerElement = createHTMLElement('container');
+  BODY.append(containerElement);
+
+  container = document.querySelector('.container');
 };
 
-const createTextarea = () => {
+const addTextarea = () => {
   const textarea = createHTMLElement('text', 'textarea');
   textarea.setAttribute('name', 'textarea');
   textarea.setAttribute('autofocus', 'autofocus');
 
-  document.querySelector('.container').appendChild(textarea);
+  container.append(textarea);
   TEXT_AREA = document.querySelector('.text');
 };
 
-const createKeyboardWrapper = () => {
+const addKeyboardWrapper = () => {
   const wrapper = createHTMLElement('keyboard-wrapper');
-  document.querySelector('.container').append(wrapper);
+  container.append(wrapper);
+  return wrapper;
 };
 
-const createKeyboardLights = () => {
-  const lights = createHTMLElement('keyboard-lights');
-  document.querySelector('.keyboard-wrapper').append(lights);
+const addKeyboardLightsContainer = () => {
+  return createHTMLElement('keyboard-lights');
 };
 
-const createKeyboardKeysContainer = () => {
-  const wrapper = createHTMLElement('keyboard-keys');
-  document.querySelector('.keyboard-wrapper').append(wrapper);
+const addKeyboardKeysContainer = () => {
+  return createHTMLElement('keyboard-keys');
 };
 
 const createKeyboard = () => {
-  createKeyboardWrapper();
-  createKeyboardLights();
-  createKeyboardKeysContainer();
+  const wrapper = addKeyboardWrapper();
+  wrapper.append(addKeyboardLightsContainer());
+  wrapper.append(addKeyboardKeysContainer());
 };
 
 const removeAllChildren = (parent) => {
@@ -461,11 +465,10 @@ const checkArrows = (text) => {
 
 const addContent = () => {
   addSwitcher();
-
   addContainer();
-  createTextarea();
+  addTextarea();
   createKeyboard();
-  const container = document.querySelector('.container');
+  // const container = document.querySelector('.container');
   new Information(container).createInfoText();
   createRow(lang);
 };
@@ -583,20 +586,18 @@ const changeLang = () => {
   const register = checkCase();
 
   if (lang === 'en' || lang === 'EN') {
-    lang = register === 'UpperCase' ? 'RU' : 'ru';
+    lang = register === 'UpperCase' ? RU.toUpperCase() : RU;
   } else {
-    lang = register === 'UpperCase' ? 'EN' : 'en';
+    lang = register === 'UpperCase' ? EN.toUpperCase() : EN;
   }
 
   LocalStorage.setLocalStorage('lang', lang.toLowerCase());
 };
 
 const checkCase = () => {
-  if (lang.match('/[A-Z]/g') || lang.match('/[А-Я]/g')) {
-    return 'UpperCase';
-  } else {
-    return 'LowerCase';
-  }
+  const isUpperCase = lang.match('/[A-Z]/g') || lang.match('/[А-Я]/g');
+
+  return isUpperCase ? 'UpperCase' : 'LowerCase';
 };
 
 document.body.dataset.theme = LocalStorage.getLocalStorage('theme');
