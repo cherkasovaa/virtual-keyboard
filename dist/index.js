@@ -22,6 +22,7 @@ let flagShift = false;
 const defaultLanguage = 'en';
 const localStorageLang = getLocalStorage('lang');
 let lang = localStorageLang || defaultLanguage;
+// let theme = getLocalStorage('theme') || 'light';
 
 const symbols = {
   en: [
@@ -62,6 +63,9 @@ const texts = [
 const createSwitcher = () => {
   const switcher = document.createElement('div');
   switcher.className = 'switch';
+  if (getLocalStorage('theme') === 'dark') {
+    switcher.classList.add('on');
+  }
   return switcher;
 };
 
@@ -582,11 +586,13 @@ const checkCase = () => {
 };
 
 switcherTheme.addEventListener('click', () => {
-  switcherTheme.classList.toggle('on');
-  const theme = document.body.dataset.theme;
+  switcherTheme.classList.contains('on') ? switcherTheme.classList.remove('on') : switcherTheme.classList.add('on')
 
-  document.body.dataset.theme = theme === 'dark' ? 'light' : 'dark';
+  document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+  setLocalStorage('theme', document.body.dataset.theme);
 });
+
+document.body.dataset.theme = getLocalStorage('theme');
 
 const setLocalStorage = (key, value) => {
   localStorage.setItem(key, value);
