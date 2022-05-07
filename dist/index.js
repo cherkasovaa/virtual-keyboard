@@ -460,13 +460,14 @@ const addContent = () => {
 addContent();
 
 window.addEventListener('keydown', (e) => {
-  console.log(e);
   keys.forEach((key) => {
     e.preventDefault();
+    
     if (key.getAttribute('data-name') === e.key) {
       key.classList.add('active');
     }
 
+    hightlightSpaceKey(e);
     hightlightCapslockKey(e);
     hightlightShiftsKey(e);
     hightlightCtrlKey(e);
@@ -474,30 +475,18 @@ window.addEventListener('keydown', (e) => {
     hightlightArrowKey(e);
     hightlightWindowKey(e);
 
-    if (key.innerHTML === e.key) {
-      displayText(e);
-      return;
-    }
+    const hashMap = {
+      isRightKey: () => key.innerHTML === e.key,
+      isSpaceKey: () => e.key === ' ' && key.innerHTML === 'Space',
+      isAmpersandKey: () => e.key === '&' && key.innerHTML === '&amp;',
+      isArrowLeft: () => e.key === '>' && key.innerHTML === '&gt;',
+      isArrowRight: () => e.key === '<' && key.innerHTML === '&lt;',
+    };
 
-    if (e.key === ' ' && key.innerHTML === 'Space') {
-      hightlightSpaceKey(e);
-      displayText(e);
-      return;
-    }
-
-    if (e.key === '&' && key.innerHTML === '&amp;') {
-      displayText(e);
-      return;
-    }
-
-    if (e.key === '>' && key.innerHTML === '&gt;') {
-      displayText(e);
-      return;
-    }
-
-    if (e.key === '<' && key.innerHTML === '&lt;') {
-      displayText(e);
-      return;
+    for (const cond in hashMap) {
+      if (hashMap[cond]()) {
+        displayText(e);
+      }
     }
 
     displayArrows(e, key);
